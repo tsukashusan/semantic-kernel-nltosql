@@ -1,16 +1,21 @@
-You are an expert at writing SQL queries throught a given Natural Language description of the OBJECTIVE. 
+あなたは目的の与えられた自然言語記述を通してSQLクエリを記述するエキスパートです。
 ---
 {{$input}}
 ---
 
-You will generate a SQL SELECT query that is compatible with Transact-SQL and achieves the given OBJECTIVE. 
-You use only the tables and views described in following SCHEMA:
+Transact-SQLと互換性があり、与えられた目的を達成するSQL SELECTクエリを生成します。
+以下のSCHEMAに記述されたテーブルとビューのみを使用してください：
 
-CREATE TABLE products (product_id INT PRIMARY KEY, product_name VARCHAR(100), product_description TEXT, product_price DECIMAL(10, 2), product_category VARCHAR(50), in_stock BIT);
+CREATE TABLE [data].[運送会社]( [運送コード] [int] NOT NULL, [運送会社] [nvarchar](40) NOT NULL, [電話番号] [nvarchar](24) NULL, CONSTRAINT [PK_運送会社] PRIMARY KEY CLUSTERED ( [運送コード] ASC)WITH (STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF));
+CREATE TABLE [data].[仕入先]( [仕入先コード] [int] NOT NULL, [フリガナ] [nvarchar](80) NULL, [仕入先名] [nvarchar](40) NOT NULL, [担当者名] [nvarchar](30) NULL, [部署] [nvarchar](30) NULL, [郵便番号] [nvarchar](10) NULL, [トドウフケン] [nvarchar](30) NULL, [都道府県] [nvarchar](15) NULL, [住所1] [nvarchar](60) NULL, [住所2] [nvarchar](60) NULL, [電話番号] [nvarchar](24) NULL, [ファクシミリ] [nvarchar](24) NULL, [ホームページ] [nvarchar](max) NULL, CONSTRAINT [PK_仕入先] PRIMARY KEY CLUSTERED ( [仕入先コード] ASC)WITH (STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF));
+CREATE TABLE [data].[社員]( [社員コード] [int] NOT NULL, [フリガナ] [nvarchar](80) NULL, [氏名] [nvarchar](40) NOT NULL, [在籍支社] [nvarchar](20) NULL, [部署名] [nvarchar](30) NULL, [誕生日] [datetime] NULL, [入社日] [datetime] NULL, [自宅郵便番号] [nvarchar](10) NULL, [自宅都道府県] [nvarchar](40) NULL, [自宅住所1] [nvarchar](60) NULL, [自宅住所2] [nvarchar](60) NULL, [自宅電話番号] [nvarchar](24) NULL, [内線] [nvarchar](4) NULL, [写真] [nvarchar](255) NULL, [プロフィール] [nvarchar](max) NULL, CONSTRAINT [PK_社員] PRIMARY KEY CLUSTERED ( [社員コード] ASC)WITH (STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF));
+CREATE TABLE [data].[受注]( [受注コード] [int] NOT NULL, [得意先コード] [int] NULL, [社員コード] [int] NULL, [出荷先名] [nvarchar](40) NULL, [出荷先郵便番号] [nvarchar](10) NULL, [出荷先都道府県] [nvarchar](20) NULL, [出荷先住所1] [nvarchar](60) NULL, [出荷先住所2] [nvarchar](60) NULL, [運送区分] [int] NULL, [受注日] [datetime] NULL, [締切日] [datetime] NULL, [出荷日] [datetime] NULL, [運送料] [money] NULL, CONSTRAINT [PK_受注] PRIMARY KEY CLUSTERED ( [受注コード] ASC)WITH (STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF));
+CREATE TABLE [data].[受注明細]( [受注コード] [int] NOT NULL, [商品コード] [int] NOT NULL, [単価] [money] NOT NULL, [数量] [smallint] NOT NULL, [割引] [real] NOT NULL, CONSTRAINT [PK_受注明細] PRIMARY KEY CLUSTERED ( [受注コード] ASC, [商品コード] ASC)WITH (STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF));
+CREATE TABLE [data].[受注明細]( [受注コード] [int] NOT NULL, [商品コード] [int] NOT NULL, [単価] [money] NOT NULL, [数量] [smallint] NOT NULL, [割引] [real] NOT NULL, CONSTRAINT [PK_受注明細] PRIMARY KEY CLUSTERED ( [受注コード] ASC, [商品コード] ASC)WITH (STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF));
+CREATE TABLE [data].[商品]( [商品コード] [int] NOT NULL, [フリガナ] [nvarchar](80) NULL, [商品名] [nvarchar](40) NOT NULL, [仕入先コード] [int] NULL, [区分コード] [int] NULL, [梱包単位] [nvarchar](20) NULL, [単価] [money] NULL, [在庫] [smallint] NULL, [発注済] [smallint] NULL, [発注点] [smallint] NULL, [生産中止] [bit] NOT NULL, CONSTRAINT [PK_商品] PRIMARY KEY CLUSTERED ( [商品コード] ASC)WITH (STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF));
+CREATE TABLE [data].[商品区分]( [区分コード] [int] NOT NULL, [区分名] [nvarchar](30) NOT NULL, [説明] [nvarchar](max) NULL, [図] [varbinary](max) NULL, CONSTRAINT [PK_商品区分] PRIMARY KEY CLUSTERED ( [区分コード] ASC)WITH (STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF));
+CREATE TABLE [data].[都道府県]( [トドウフケン] [nvarchar](30) NULL, [都道府県] [nvarchar](15) NULL, [ローマ字] [varchar](100) NULL, [地域名ローマ字] [varchar](100) NULL, [地域] [nvarchar](10) NULL);
+CREATE TABLE [data].[得意先]( [得意先コード] [int] NOT NULL, [フリガナ] [nvarchar](40) NULL, [得意先名] [nvarchar](40) NOT NULL, [担当者名] [nvarchar](30) NULL, [部署] [nvarchar](30) NULL, [郵便番号] [nvarchar](10) NULL, [トドウフケン] [nvarchar](30) NULL, [都道府県] [nvarchar](15) NULL, [住所1] [nvarchar](60) NULL, [住所2] [nvarchar](60) NULL, [電話番号] [nvarchar](24) NULL, [ファクシミリ] [nvarchar](24) NULL, CONSTRAINT [PK_得意先] PRIMARY KEY CLUSTERED ( [得意先コード] ASC)WITH (STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF));
 
-CREATE TABLE sellers (seller_id INT PRIMARY KEY, seller_name VARCHAR(100), seller_email VARCHAR(100), seller_contact_number VARCHAR(15), seller_address TEXT);
-
-CREATE TABLE sales_transaction (transaction_id INT PRIMARY KEY, product_id INT, seller_id INT, quantity INT, transaction_date DATE, FOREIGN KEY (product_id) REFERENCES products(product_id), FOREIGN KEY (seller_id) REFERENCES sellers(seller_id));
-
-The output must be a SQL SELECT query that achieves the OBJECTIVE.
-Use Transact-SQL syntax to write the query compatible with Microsoft SQL Server and Azure SQL Database.
+出力は、目的を達成する SQL SELECT クエリでなければなりません。
+Microsoft SQL Server および Azure SQL Database と互換性のあるクエリを記述するには、Transact-SQL 構文を使用します。

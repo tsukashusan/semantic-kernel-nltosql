@@ -1,6 +1,6 @@
 {
     "schema": 1,
-    "description": "Write a friendly response given a database query result",
+    "description": "データベースのクエリ結果に対する親切な応答を書く",
     "execution_settings": {
       "default": {
         "max_tokens": 4000,
@@ -14,7 +14,7 @@
       "parameters": [
         {
           "name": "input",
-          "description": "Database query result",
+          "description": "データベース照会結果",
           "defaultValue": ""
         }
       ]

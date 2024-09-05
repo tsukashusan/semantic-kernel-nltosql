@@ -1,6 +1,6 @@
 {
     "schema": 1,
-    "description": "Convert SQL queries in any ANSI SQL dialect to a Transact-SQL dialect",
+    "description": "ANSI SQL方言のSQLクエリをTransact-SQL方言に変換します。",
     "execution_settings": {
       "default": {
         "max_tokens": 4000,
@@ -14,7 +14,7 @@
       "parameters": [
         {
           "name": "input",
-          "description": "Define the Natural Language input text",
+          "description": "自然言語入力テキストの定義",
           "defaultValue": ""
         }
       ]

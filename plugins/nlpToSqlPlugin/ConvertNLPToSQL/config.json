@@ -1,6 +1,6 @@
 {
     "schema": 1,
-    "description": "Write SQL queries given a Natural Language description",
+    "description": "自然言語で記述されたSQLクエリを書く",
     "execution_settings": {
       "default": {
         "max_tokens": 4000,
@@ -14,7 +14,7 @@
       "parameters": [
         {
           "name": "input",
-          "description": "Define the Natural Language input text",
+          "description": "自然言語入力テキストの定義",
           "defaultValue": ""
         }
       ]
