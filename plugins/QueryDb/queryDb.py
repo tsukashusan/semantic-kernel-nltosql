@@ -27,10 +27,8 @@ class QueryDbPlugin:
     def query_db(self, input: Annotated[str, "実行するSQLクエリ"]) -> Annotated[Optional[list], "結果を得るためにデータベースに問い合わせる。"]:   
         # Connect to the SQL Server database
         conn = pyodbc.connect(self._connection_string)
-        print(f"input=☆{self.__clean_sql_query__(input)}☆")
         # Create a cursor object to execute SQL queries
         cursor = conn.cursor()
-        print(f"★★★★★★★★★★★★★★★★★★★★★★★★")
         try:
             sql = self.__clean_sql_query__(input)
             print(f"sql={sql}")
